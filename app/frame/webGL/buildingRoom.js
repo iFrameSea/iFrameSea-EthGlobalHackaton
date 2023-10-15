@@ -343,41 +343,6 @@ export const buildingRoom = (scene, parent) => {
           }
         }
       }
-      // if (defaultBuilding[i].type == "floor") {
-      //   for (let j = 0; j < defaultBuilding[i].coord.length; j++) {
-      //     floor[j] = MeshBuilder.CreateBox(
-      //       "floor",
-      //       {
-      //         width: defaultBuilding[i].prop[j].width,
-      //         height: defaultBuilding[i].prop[j].height,
-      //         depth: defaultBuilding[i].prop[j].depth,
-      //       },
-      //       scene
-      //     );
-      //     floor[j].rotation.x = defaultBuilding[i].prop[j].rtx;
-      //     floor[j].rotation.y = defaultBuilding[i].prop[j].rty;
-      //     floor[j].rotation.z = defaultBuilding[i].prop[j].rtz;
-      //     floor[j].position.x = x + defaultBuilding[i].coord[j][0];
-      //     floor[j].position.y = y + defaultBuilding[i].coord[j][1];
-      //     floor[j].position.z = z + defaultBuilding[i].coord[j][2];
-      //     floor[j].checkCollisions = true;
-
-      //     floorMat[j] = new StandardMaterial("floorMat", scene);
-      //     if (defaultBuilding[i].prop[j].dt == true) {
-      //       floorMat[j].diffuseTexture = new Texture(
-      //         defaultBuilding[i].prop[j].tx,
-      //         scene
-      //       );
-      //       floorMat[j].diffuseTexture.uScale = 60;
-      //       floorMat[j].diffuseTexture.vScale = 60;
-      //       floorMat[j].specularColor = new Color3(0, 0, 0);
-      //     } else if (defaultBuilding[i].prop[j].dt == false) {
-      //       floorMat[j].diffuseColor = defaultBuilding[i].prop[j].dc;
-      //     }
-      //     floorMat[j].alpha = defaultBuilding[i].prop[j].alpha;
-      //     floor[j].material = floorMat[j];
-      //   }
-      // }
     }
     roomComponentArr = [
       ...entrance,
@@ -386,7 +351,7 @@ export const buildingRoom = (scene, parent) => {
       ...roof,
       ...wallFrame,
       ...roofFrame,
-      //...floor,
+      ...floor,
     ];
     console.log("meshes", roomComponentArr);
     roomMerged = Mesh.MergeMeshes(
@@ -412,4 +377,26 @@ export const buildingRoom = (scene, parent) => {
   /********Framemaker function starts here********/
   /********Framemaker function Ends********/
   //console.log("room", roomMerged.parent);
+};
+
+export const buildGround = (scene, parent) => {
+  let floor = MeshBuilder.CreateBox(
+    "door",
+    { width: 24, height: 25, depth: 0.1 },
+    scene
+  );
+  floor.rotation.x = -Math.PI / 2;
+  floor.position.x = 0;
+  floor.position.y = 0;
+  floor.position.z = 12.5;
+
+  let floorMat = new StandardMaterial("ground", scene);
+  floorMat.diffuseTexture = new Texture(
+    "https://images.pexels.com/photos/2117937/pexels-photo-2117937.jpeg?cs=srgb&dl=pexels-scott-webb-2117937.jpg&fm=jpg",
+    scene
+  );
+  floorMat.diffuseTexture.uScale = 6;
+  floorMat.diffuseTexture.vScale = 6;
+  floorMat.specularColor = new Color3(0, 0, 0);
+  floor.material = floorMat;
 };

@@ -10,7 +10,7 @@ import SceneComponent from "./SceneComponent";
 import { frameMaker } from "./frameMaker";
 import { defaultBuilding } from "./DefaultBuilding";
 import { initEnviromet } from "./initEviroment";
-import { buildingRoom } from "./buildingRoom";
+import { buildingRoom, buildGround } from "./buildingRoom";
 import { uploadBut } from "./uploadButton";
 import {AvatarLoader} from "./Avatar"
 
@@ -29,10 +29,10 @@ const onSceneReady = (scene, data) => {
 
   const camera = new ArcRotateCamera(
     "camera1",
-    0,
-    0,
+    -Math.PI/2,
+    Math.PI/2,
     10,
-    new Vector3(0, 5, 0),
+    new Vector3(0, 1.5, 0),
     scene
   );
   //const watcher = new FreeCamera("watcher", new Vector3(0, 2, 0), scene);
@@ -45,8 +45,10 @@ const onSceneReady = (scene, data) => {
   // camera.maxZ = 1000.01;
   camera.lowerRadiusLimit = 2;
   camera.upperRadiusLimit = 10;
+	camera.lowerBetaLimit = 0.1;
+	camera.upperBetaLimit = (Math.PI / 2) * 0.9;
   camera.wheelDeltaPercentage = 0.01;
-  camera.speed = 0.8;
+  camera.speed = 2;
   camera.checkCollisions = true;
   // camera.applyGravity = true;
   //camera.inertia = 0.5;
@@ -76,6 +78,7 @@ const onSceneReady = (scene, data) => {
 
   initEnviromet(scene, parent);
   buildingRoom(scene, parent);
+  buildGround(scene,parent)
  // uploadBut(scene, parent);
   AvatarLoader(scene)
   //initEvent(scene, canvas, parent);

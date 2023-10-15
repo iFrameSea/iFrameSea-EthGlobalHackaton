@@ -5,6 +5,10 @@ import {
   Vector3,
   ShadowGenerator,
   DirectionalLight,
+  normalizeToUnitCube,
+  Mesh,
+  MeshBuilder,
+  getBoundingInfo,
 } from "@babylonjs/core";
 
 var fileRoute = "https://raw.githubusercontent.com/bagheriarash/Files/main/";
@@ -47,9 +51,10 @@ export const AvatarLoader = async (scene) => {
   );
 
   var mainAvatar = readyPalyerAvatar.meshes[0];
+  mainAvatar.rotation.y = Math.PI / 2;
   // readyPalyerAvatar.meshes[0].checkCollisions = true;
   //readyPalyerAvatar.meshes[1].checkCollisions = true;
-  animationAvatar.visibility = 0;
+  animationAvatar.meshes[1].visibility = 0;
 
   mainAvatar.position = new Vector3(0, 0, -6);
 
@@ -57,13 +62,15 @@ export const AvatarLoader = async (scene) => {
   var mainAvatarSpeedBackwards = 0.01;
   var mainAvatarRotationSpeed = 0.1;
   animationAvatar.meshes[0].parent = mainAvatar;
-  mainAvatar.scaling = new Vector3(1, 1, 1);
+  mainAvatar.scaling = new Vector3(0.9, 0.9, 0.9);
   console.log("C", scene.activeCameras);
-  //scene.activeCameras[0].target = mainAvatar;
+  //scene.activeCameras.target = mainAvatar;
+  scene.activeCameras[0].setTarget(mainAvatar);
   console.log("targeet", scene.activeCameras[0].target);
-  scene.activeCameras[0].target.x = mainAvatar.position.x;
-  scene.activeCameras[0].target.z = mainAvatar.position.z;
-  scene.activeCameras[0].target.y = 2;
+
+  //scene.activeCameras[0].target.x = mainAvatar.position.x;
+  //scene.activeCameras[0].target.z = mainAvatar.position.z;
+  //scene.activeCameras[0].target.y = 2;
 
   mainAvatar.applyGravity = true;
 
@@ -193,4 +200,14 @@ let findBoneByName = (skeleton, name) => {
     }
   }
   return result;
+};
+
+let centerMesh = function (mesh) {
+  let center = Vector3.Zero().copyFrom(
+    mesh.getBoundingInfo().boundingBox.centerWorld
+  );
+  center.y *= -1;
+  center.z *= -1;
+  mesh.setPivotPoint(center);
+  return mesh;
 };
