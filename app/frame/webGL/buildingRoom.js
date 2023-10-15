@@ -382,13 +382,14 @@ export const buildingRoom = (scene, parent) => {
 export const buildGround = (scene, parent) => {
   let floor = MeshBuilder.CreateBox(
     "door",
-    { width: 24, height: 25, depth: 0.1 },
+    { width: 24, height: 25, depth: 0.08 },
     scene
   );
   floor.rotation.x = -Math.PI / 2;
   floor.position.x = 0;
   floor.position.y = 0;
   floor.position.z = 12.5;
+  // floor.checkCollisions = true;
 
   let floorMat = new StandardMaterial("ground", scene);
   floorMat.diffuseTexture = new Texture(

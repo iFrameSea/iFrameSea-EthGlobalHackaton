@@ -31,8 +31,8 @@ const onSceneReady = (scene, data) => {
     "camera1",
     -Math.PI/2,
     Math.PI/2,
-    10,
-    new Vector3(0, 1.5, 0),
+    5,
+    new Vector3(0, 3, -10),
     scene
   );
   //const watcher = new FreeCamera("watcher", new Vector3(0, 2, 0), scene);
@@ -45,7 +45,7 @@ const onSceneReady = (scene, data) => {
   // camera.maxZ = 1000.01;
   camera.lowerRadiusLimit = 2;
   camera.upperRadiusLimit = 10;
-	camera.lowerBetaLimit = 0.1;
+	camera.lowerBetaLimit = 2;
 	camera.upperBetaLimit = (Math.PI / 2) * 0.9;
   camera.wheelDeltaPercentage = 0.01;
   camera.speed = 2;

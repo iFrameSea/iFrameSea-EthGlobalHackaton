@@ -3,6 +3,7 @@ import {
   ActionManager,
   ExecuteCodeAction,
   Vector3,
+  BoundingInfo,
   ShadowGenerator,
   DirectionalLight,
   normalizeToUnitCube,
@@ -45,26 +46,44 @@ export const AvatarLoader = async (scene) => {
     scene
   );
 
+  //readyPalyerAvatar.meshes[0].position = Vector3.Zero();
+
+  const { min, max } =
+    readyPalyerAvatar.meshes[0].getHierarchyBoundingVectors();
+  const boundingInfo = new BoundingInfo(min, max);
+
+  const centerPoint = boundingInfo.boundingBox.center.scale(-1.6);
+  readyPalyerAvatar.meshes[0].position = centerPoint;
+  readyPalyerAvatar.meshes[0].bakeCurrentTransformIntoVertices();
+
+  readyPalyerAvatar.meshes[0].position.y += 1;
+
+  // node.scaling = new Vector3(.9, 3.21, .9)
+
+  //sphere.position = centerPoint;
+
   linkSkeletonMeshes(
     animationAvatar.skeletons[0],
     readyPalyerAvatar.skeletons[0]
   );
 
   var mainAvatar = readyPalyerAvatar.meshes[0];
-  mainAvatar.rotation.y = Math.PI / 2;
+  // readyPalyerAvatar.meshes[1].rotation.y = Math.PI;
+  // readyPalyerAvatar.meshes[0].rotation.y = Math.PI;
+
   // readyPalyerAvatar.meshes[0].checkCollisions = true;
   //readyPalyerAvatar.meshes[1].checkCollisions = true;
   animationAvatar.meshes[1].visibility = 0;
 
-  mainAvatar.position = new Vector3(0, 0, -6);
+  mainAvatar.position = new Vector3(0, 1.4, -10);
 
-  var mainAvatarSpeed = 0.01;
-  var mainAvatarSpeedBackwards = 0.01;
+  var mainAvatarSpeed = 0.1;
+  var mainAvatarSpeedBackwards = 0.11;
   var mainAvatarRotationSpeed = 0.1;
   animationAvatar.meshes[0].parent = mainAvatar;
-  mainAvatar.scaling = new Vector3(0.9, 0.9, 0.9);
+  mainAvatar.scaling = new Vector3(0.95, 0.95, 0.95);
   console.log("C", scene.activeCameras);
-  //scene.activeCameras.target = mainAvatar;
+  //scene.activeCameras[0].target = mainAvatar;
   scene.activeCameras[0].setTarget(mainAvatar);
   console.log("targeet", scene.activeCameras[0].target);
 
@@ -72,7 +91,7 @@ export const AvatarLoader = async (scene) => {
   //scene.activeCameras[0].target.z = mainAvatar.position.z;
   //scene.activeCameras[0].target.y = 2;
 
-  mainAvatar.applyGravity = true;
+  // mainAvatar.applyGravity = true;
 
   // var light = new DirectionalLight(
   //   "dir06",
@@ -200,14 +219,4 @@ let findBoneByName = (skeleton, name) => {
     }
   }
   return result;
-};
-
-let centerMesh = function (mesh) {
-  let center = Vector3.Zero().copyFrom(
-    mesh.getBoundingInfo().boundingBox.centerWorld
-  );
-  center.y *= -1;
-  center.z *= -1;
-  mesh.setPivotPoint(center);
-  return mesh;
 };
