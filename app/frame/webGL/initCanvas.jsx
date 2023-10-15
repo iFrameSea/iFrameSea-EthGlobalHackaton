@@ -2,14 +2,15 @@ import React from "react";
 import {
   MeshBuilder,
   ArcRotateCamera,
-  Vector3
+  Vector3,
+  TransformNode
 } from "@babylonjs/core";
 import { initEvent } from "./initEvent";
 import { SkyMaterial } from "@babylonjs/materials/sky";
 import SceneComponent from "./SceneComponent";
 import { frameMaker } from "./frameMaker";
 import { defaultBuilding } from "./DefaultBuilding";
-import { initEnviromet } from "./initEviroment";
+import { initEnviromet,QuickTreeGenerator } from "./initEviroment";
 import { buildingRoom, buildGround } from "./buildingRoom";
 import { uploadBut } from "./uploadButton";
 import {AvatarLoader} from "./Avatar"
@@ -45,7 +46,7 @@ const onSceneReady = (scene, data) => {
   // camera.maxZ = 1000.01;
   camera.lowerRadiusLimit = 2;
   camera.upperRadiusLimit = 10;
-	camera.lowerBetaLimit = 2;
+	camera.lowerBetaLimit = 0.01;
 	camera.upperBetaLimit = (Math.PI / 2) * 0.9;
   camera.wheelDeltaPercentage = 0.01;
   camera.speed = 2;
@@ -68,19 +69,17 @@ const onSceneReady = (scene, data) => {
   camera.attachControl(canvas, true); // This attaches the camera to the canvas
   // scene.useRightHandedSystem = true
 
-  const parent = MeshBuilder.CreateSphere(
-    "sphere",
-    { diameter: 1, segments: 5 },
-    scene
-  );
-  parent.isVisible = false;
+  var parent = new TransformNode("parent");
+  parent.id = "arash"
+  parent.name = "arash"
+
   console.log("parent", parent);
 
   initEnviromet(scene, parent);
   buildingRoom(scene, parent);
   buildGround(scene,parent)
- // uploadBut(scene, parent);
-  AvatarLoader(scene)
+  uploadBut(scene, parent);
+  AvatarLoader(scene,parent)
   //initEvent(scene, canvas, parent);
 };
 

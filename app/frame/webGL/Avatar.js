@@ -11,9 +11,10 @@ import {
   MeshBuilder,
   getBoundingInfo,
 } from "@babylonjs/core";
+import * as GUI from "@babylonjs/gui";
 
 var fileRoute = "https://raw.githubusercontent.com/bagheriarash/Files/main/";
-export const AvatarLoader = async (scene) => {
+export const AvatarLoader = async (scene, parent) => {
   let readyPalyerAvatar;
   let animationAvatar;
 
@@ -76,6 +77,7 @@ export const AvatarLoader = async (scene) => {
   animationAvatar.meshes[1].visibility = 0;
 
   mainAvatar.position = new Vector3(0, 1.4, -10);
+  mainAvatar.checkCollisions = true;
 
   var mainAvatarSpeed = 0.1;
   var mainAvatarSpeedBackwards = 0.11;
@@ -83,8 +85,8 @@ export const AvatarLoader = async (scene) => {
   animationAvatar.meshes[0].parent = mainAvatar;
   mainAvatar.scaling = new Vector3(0.95, 0.95, 0.95);
   console.log("C", scene.activeCameras);
-  //scene.activeCameras[0].target = mainAvatar;
-  scene.activeCameras[0].setTarget(mainAvatar);
+  scene.activeCameras[0].target = mainAvatar;
+  // scene.activeCameras[0].setTarget(mainAvatar);
   console.log("targeet", scene.activeCameras[0].target);
 
   //scene.activeCameras[0].target.x = mainAvatar.position.x;
@@ -105,8 +107,42 @@ export const AvatarLoader = async (scene) => {
   // generator.bias = 0.000001;
   // generator.addShadowCaster(mainAvatar, true);
 
+  //lable name
+  let nameLable = new MeshBuilder.CreatePlane(
+    "nameIcon",
+    { width: 0.45, height: 0.45, sideOrientation: Mesh.DOUBLESIDE },
+    scene
+  );
+  nameLable.parent = mainAvatar;
+  nameLable.position.y += 0.65;
+  // nameLable.position.z = -0.003;
+  // nameLable.isPickable = true;
+
+  let nameText = GUI.AdvancedDynamicTexture.CreateForMesh(nameLable, 256, 256);
+  let textName = "arash";
+
+  var nameLableBut = GUI.Button.CreateSimpleButton("Open_Btn", textName);
+
+  nameLableBut.width = 1;
+  nameLableBut.height = 0.22;
+  nameLableBut.fontSize = 40;
+  nameLableBut.resizeToFit = true;
+  nameLableBut.textWrapping = true;
+
+  nameLableBut.color = "#FFFFFF";
+  nameLableBut.cornerRadius = 80;
+  nameLableBut.background = "#000000";
+  nameLableBut.alpha = 1;
+  // nameLableBut.thickness = 4
+  nameLableBut.hoverCursor = "pointer";
+  // nameLableBut.fontStyle = 'bold'
+  nameLableBut.fontFamily = "Arial";
+
+  nameText.addControl(nameLableBut);
+
   const walkAnim = scene.getAnimationGroupByName("walking");
   const idleAnim = scene.getAnimationGroupByName("idle");
+  const sayHi = scene.getAnimationGroupByName("sayHi");
 
   const walkBackAnim = scene.getAnimationGroupByName("walkingBackward");
 
@@ -134,7 +170,7 @@ export const AvatarLoader = async (scene) => {
       mainAvatar.rotate(Vector3.Up(), mainAvatarRotationSpeed);
       keydown = true;
     }
-    if (inputMap["b"]) {
+    if (inputMap["q"]) {
       keydown = true;
     }
 
@@ -151,6 +187,9 @@ export const AvatarLoader = async (scene) => {
             walkBackAnim.to,
             false
           );
+        } else if (inputMap["q"]) {
+          //Walk backwards
+          sayHi.start(true, 1.0, sayHi.from, sayHi.to, false);
         }
         // else if
         //     (inputMap["b"]) {
@@ -170,6 +209,7 @@ export const AvatarLoader = async (scene) => {
         //Stop all animations besides Idle Anim when no key is down
         walkAnim.stop();
         walkBackAnim.stop();
+        sayHi.stop();
 
         //Ensure animation are played only once per rendering loop
         animating = false;
