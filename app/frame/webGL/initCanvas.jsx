@@ -12,8 +12,10 @@ import { frameMaker } from "./frameMaker";
 import { defaultBuilding } from "./DefaultBuilding";
 import { initEnviromet,QuickTreeGenerator } from "./initEviroment";
 import { buildingRoom, buildGround } from "./buildingRoom";
-import { uploadBut } from "./uploadButton";
+import { uploadBut,loopImg } from "./uploadButton";
 import {AvatarLoader} from "./Avatar"
+import {data} from "./data"
+
 
 // uses above component in same directory
 // import SceneComponent from 'babylonjs-hook'; // if you install 'babylonjs-hook' NPM.
@@ -27,6 +29,7 @@ const onSceneReady = (scene, data) => {
   const canvas = scene.getEngine().getRenderingCanvas();
   scene.canvasRef = canvas;
   window.sceneRef = scene;
+  console.log("data", data)
 
   const camera = new ArcRotateCamera(
     "camera1",
@@ -49,7 +52,7 @@ const onSceneReady = (scene, data) => {
 	camera.lowerBetaLimit = 0.01;
 	camera.upperBetaLimit = (Math.PI / 2) * 0.9;
   camera.wheelDeltaPercentage = 0.01;
-  camera.speed = 2;
+  camera.speed = 1;
   camera.checkCollisions = true;
   // camera.applyGravity = true;
   //camera.inertia = 0.5;
@@ -70,16 +73,17 @@ const onSceneReady = (scene, data) => {
   // scene.useRightHandedSystem = true
 
   var parent = new TransformNode("parent");
-  parent.id = "arash"
-  parent.name = "arash"
+  parent.id = data.parent
+  parent.name = data.parent
 
   console.log("parent", parent);
 
-  initEnviromet(scene, parent);
-  buildingRoom(scene, parent);
-  buildGround(scene,parent)
-  uploadBut(scene, parent);
-  AvatarLoader(scene,parent)
+  initEnviromet(scene, parent,data);
+  buildingRoom(scene, parent,data);
+  buildGround(scene,parent,data)
+  uploadBut(scene, parent,data);
+  AvatarLoader(scene,parent,data)
+  loopImg(scene,parent,data)
   //initEvent(scene, canvas, parent);
 };
 
@@ -101,6 +105,7 @@ export default () => (
       antialias
       onSceneReady={onSceneReady}
       onRender={onRender}
+      data = {data}
       id="my-canvas"
     />
   </div>

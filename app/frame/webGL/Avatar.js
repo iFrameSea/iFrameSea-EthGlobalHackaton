@@ -14,7 +14,7 @@ import {
 import * as GUI from "@babylonjs/gui";
 
 var fileRoute = "https://raw.githubusercontent.com/bagheriarash/Files/main/";
-export const AvatarLoader = async (scene, parent) => {
+export const AvatarLoader = async (scene, parent, data) => {
   let readyPalyerAvatar;
   let animationAvatar;
 

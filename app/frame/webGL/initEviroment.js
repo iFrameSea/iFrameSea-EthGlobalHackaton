@@ -17,7 +17,7 @@ import "@babylonjs/loaders";
 import { SkyMaterial } from "@babylonjs/materials";
 
 const baseUrl = "https://raw.githubusercontent.com/bagheriarash/Files/main/";
-export const initEnviromet = (scene, parent) => {
+export const initEnviromet = (scene, parent, data) => {
   //light
   var light = new HemisphericLight("light", new Vector3(0, 1, 0), scene);
   //  let light3 = new HemisphericLight("light", new Vector3(0, 1, 0), scene);

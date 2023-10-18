@@ -1,43 +1,16 @@
 import * as GUI from "@babylonjs/gui";
-import React from "react";
 import {
-  FreeCamera,
   Vector3,
-  HemisphericLight,
   MeshBuilder,
   StandardMaterial,
   Texture,
   Color3,
-  Animation,
-  PointLight,
-  Mesh,
-  DeviceSourceManager,
-  DeviceType,
 } from "@babylonjs/core";
 import "@babylonjs/gui";
 import { frameMaker } from "./frameMaker";
 
 var _URL = window.URL || window.webkitURL;
 let img;
-let mySrc;
-let image = {};
-let paintComponentArr = [];
-let paintArr = {
-  rot: [Math.PI / 2, Math.PI / 2, -Math.PI / 2, -Math.PI / 2, 0, 0],
-  coord: [
-    [47 / 4, 10 / 4, 20 / 4],
-    [47 / 4, 10 / 4, 80 / 4],
-    [-47 / 4, 10 / 4, 20 / 4],
-    [-47 / 4, 10 / 4, 80 / 4],
-    [-20 / 4, 10 / 4, 99 / 4],
-    [20 / 4, 10 / 4, 99 / 4],
-  ],
-};
-let artArr = [];
-let artDimension = {
-  width: [],
-  height: [],
-};
 
 let fileInput = document.getElementById("fileInput");
 if (!fileInput) {
@@ -46,7 +19,7 @@ if (!fileInput) {
   fileInput.setAttribute("type", "file");
 }
 
-export const uploadBut = (scene, parent) => {
+export const uploadBut = (scene, parent, data) => {
   let advTexture = GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI", true);
 
   let btn = GUI.Button.CreateSimpleButton("FileUploader", "Upload File");
@@ -68,32 +41,34 @@ export const uploadBut = (scene, parent) => {
     if (!file) return;
     img = new Image();
     let objectUrl = _URL.createObjectURL(file);
-    img.onload = async function () {
-      await console.log(1, img.width + " " + img.height);
-      await img.width;
-      await img.height;
-      image.width = img.width;
-      image.height = img.height;
-      await _URL.revokeObjectURL(objectUrl);
-      artDimension.width.push(image.width);
-      artDimension.height.push(image.height);
-    };
     img.src = objectUrl;
-
-    console.log(2, image);
-    console.log(3, img.width + " " + img.height);
-    artArr.push(img.src);
-
-    addImg(scene);
+    data.NFTs.push(img.src);
+    loopImg(scene, parent, data);
   };
 };
 
-export const addImg = (scene) => {
-  console.log("Arrrs", artArr, artDimension);
+const getMeta = async (url) => {
+  const img = new Image();
+  img.src = url;
+  await img.decode();
+  console.log(33, img);
+  return img;
+};
+export const loopImg = async (scene, parent, data) => {
+  let result;
+
+  console.log("imgUrls", data.NFTs);
+
   if (true) {
-    for (let i = 0; i < artArr.length; i++) {
-      let width = artDimension.width[i] / 1000;
-      let height = artDimension.height[i] / 1000;
+    // because of lack of the art spaces for now we set the data.NFTs.length =6
+    for (let i = 0; i < 6; i++) {
+      await getMeta(data.NFTs[i]).then((img) => {
+        result = img;
+      });
+      await result;
+      console.log("dim", result.naturalWidth, result.naturalHeight);
+      let width = result.naturalWidth / 1000;
+      let height = result.naturalHeight / 1000;
       let addArt = MeshBuilder.CreatePlane(
         "1",
         { width: width, height: height },
@@ -103,20 +78,17 @@ export const addImg = (scene) => {
       // addArt.position.y += 2;
       // addArt.position.z = scene.activeCamera.target.z;
       // addArt.rotation.y = scene.activeCamera.rotation.y;
-      addArt.position.x = paintArr.coord[i][0];
-      addArt.position.y = paintArr.coord[i][1];
-      addArt.position.z = paintArr.coord[i][2];
-      addArt.rotation.y = paintArr.rot[i];
+      addArt.position.x = data.coord[i][0];
+      addArt.position.y = data.coord[i][1];
+      addArt.position.z = data.coord[i][2];
+      addArt.rotation.y = data.rot[i];
       console.log("pos", addArt.position);
-      console.log(22, image["width"]);
       addArt.scaling.x = width;
       addArt.scaling.y = height;
       addArt.checkCollisions = true;
 
-      console.log("camTarget", image);
-
       let addArtMat = new StandardMaterial("paintMat", scene);
-      addArtMat.diffuseTexture = new Texture(artArr[i]);
+      addArtMat.diffuseTexture = new Texture(data.NFTs[i]);
       addArtMat.diffuseTexture.wrapU = Texture.CLAMP_ADDRESSMODE;
       addArtMat.diffuseTexture.wrapV = Texture.CLAMP_ADDRESSMODE;
       addArtMat.specularColor = new Color3(1, 1, 1);

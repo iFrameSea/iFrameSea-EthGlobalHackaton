@@ -17,7 +17,7 @@ import { SkyMaterial } from "@babylonjs/materials/sky";
 import { frameMaker } from "./frameMaker";
 import { defaultBuilding } from "./DefaultBuilding";
 
-export const buildingRoom = (scene, parent) => {
+export const buildingRoom = (scene, parent, data) => {
   //   const buildGround = (z) => {
   //     let floor = MeshBuilder.CreateBox(
   //       "door",
