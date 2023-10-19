@@ -9,6 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@babylonjs/core": "^6.23.0",
+    "babylonjs-hook": "^0.1.1",
+    "@babylonjs/gui": "^6.23.0",
+    "@babylonjs/loaders": "^6.23.0",
+    "@babylonjs/materials": "^6.22.1",
+    "@babylonjs/procedural-textures": "^6.23.0",
     "next": "13.5.4",
     "react": "^18",
     "react-dom": "^18",
