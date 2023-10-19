@@ -58,8 +58,8 @@ const onSceneReady = (scene, data) => {
   //camera.inertia = 0.5;
   /** collision avatar check size */
   // scene.gravity = new Vector3(0, -0.5, 0);
-  // camera.ellipsoid = new Vector3(0.21, 0.91, 0.21);
-  // camera.ellipsoidOffset = new Vector3(0.21, 0.66, 0.21);
+  camera.ellipsoid = new Vector3(0.21, 0.91, 0.21);
+  camera.ellipsoidOffset = new Vector3(0.21, 0.66, 0.21);
   // camera.angularSensibility = 5000;
   // camera.keysUp = [38, 87];
   // camera.keysDown = [40, 83];
