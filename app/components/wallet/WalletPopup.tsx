@@ -1,11 +1,10 @@
 'use client';
-import { sepolia } from 'wagmi/chains';
 import { useEffect, useState } from 'react';
 import { BiLoaderAlt } from 'react-icons/bi';
 import { Connector, useAccount, useConnect, useSwitchNetwork } from 'wagmi';
 import Image from 'next/image';
-import { ganache } from './WalletProvider';
 import { toast } from 'react-toastify';
+import { appChain } from './WalletProvider';
 
 function WalletPopup() {
   const { connect, connectors, isLoading, isError, data } = useConnect();
@@ -44,7 +43,7 @@ function WalletPopup() {
   }, [isConnected]);
 
   const connectWallet = (connector: Connector, provider: string) => {
-    if (!isLoading) connect({ connector, chainId: sepolia.id });
+    if (!isLoading) connect({ connector, chainId: appChain[0].id });
 
     setSelectedProvider(provider);
   };
