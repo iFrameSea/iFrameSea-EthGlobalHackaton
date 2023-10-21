@@ -52,7 +52,7 @@ const onSceneReady = (scene, data) => {
 	camera.lowerBetaLimit = 0.01;
 	camera.upperBetaLimit = (Math.PI / 2) * 0.9;
   camera.wheelDeltaPercentage = 0.01;
-  camera.speed = 1;
+  camera.speed = 0.8;
   camera.checkCollisions = true;
   // camera.applyGravity = true;
   //camera.inertia = 0.5;
