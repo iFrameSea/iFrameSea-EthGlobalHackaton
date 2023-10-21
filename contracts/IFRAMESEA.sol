@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.19;
 
 import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import {ERC721URIStorage} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
@@ -12,21 +12,26 @@ contract IFRAMESEA is ERC721, ERC721URIStorage {
 
      uint256 public nextTokenId = 0;
 
-
       mapping(uint256 => uint256) public nftLikes;
       mapping(uint256 => string[]) public nftComments;
+
+      struct TokenList {
+        string uri;
+        uint256 id;
+        address owner;
+      }
 
     constructor(address initialOwner)
         ERC721("iFrameSea", "IFS")
         // Ownable(initialOwner)
     {}
 
-    function safeMint(address to, string memory uri)
+    function safeMint(string memory uri)
         public
     {
         uint256 tokenId = nextTokenId; 
          nextTokenId++;
-        _safeMint(to, tokenId);
+        _safeMint(msg.sender, tokenId);
         _setTokenURI(tokenId, uri);
     }
 
@@ -65,6 +70,22 @@ contract IFRAMESEA is ERC721, ERC721URIStorage {
   // }
 
   function burn(uint256 tokenId) public {
-  _burn(tokenId);
-}
+    // require(msg.sender == );
+    _burn(tokenId);
+  }
+
+    function tokensOwnedByAddress(address _owner) public view returns (TokenList[] memory) {
+        uint256 couter = 0;
+        uint tokenCount = balanceOf(_owner);
+        TokenList[] memory ownedTokens = new TokenList[](tokenCount);
+
+        for (uint i = 0; i < nextTokenId; i++) {
+            if (ownerOf(i) == _owner) {
+                ownedTokens[couter] = TokenList(tokenURI(i), i, _owner);
+                couter++;
+            }
+        }
+
+        return ownedTokens;
+    }
 }
