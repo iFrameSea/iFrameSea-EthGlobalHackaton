@@ -21,9 +21,7 @@ export default function Home() {
           />
           <h1 className="text-5xl font-bold">iFrameSea</h1>
           <p className="py-6">
-            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-            excepturi exercitationem quasi. In deleniti eaque aut repudiandae et
-            a id nisi.
+          iFrameSea utilizes BabylonJS, Hardhat, OpenZeppelin and React/Next.js to build an innovative Web3 metaverse where users can explore a virtual marketplace,visualize DeFi portfolios, and integrate real-world assets. The project demonstrates the future possibilities at the intersection of metaverses, DeFi, and real-world connectivity on Ethereum and Scroll-ZKP in a compelling way.
           </p>
           {isConnected ? (
             <Link href={`/frame/${address}`} className="btn btn-lg btn-info">

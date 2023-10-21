@@ -119,7 +119,7 @@ export const AvatarLoader = async (scene, parent, data) => {
   // nameLable.isPickable = true;
 
   let nameText = GUI.AdvancedDynamicTexture.CreateForMesh(nameLable, 256, 256);
-  let textName = "arash";
+  let textName = "Alex";
 
   var nameLableBut = GUI.Button.CreateSimpleButton("Open_Btn", textName);
 
