@@ -10,6 +10,11 @@ const nextConfig = {
         }
         return config
     },
+    env: {
+        CONTRACT: process.env.CONTRACT,
+        IPFS_PROJECT_SECRET: process.env.IPFS_PROJECT_SECRET,
+        IPFS_PROJECT_KEY: process.env.IPFS_PROJECT_KEY
+    }
 }
 
 module.exports = nextConfig
