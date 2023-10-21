@@ -1,26 +1,24 @@
-import React from "react";
+import React from 'react';
 import {
   MeshBuilder,
   ArcRotateCamera,
   Vector3,
-  TransformNode
-} from "@babylonjs/core";
-import { initEvent } from "./initEvent";
-import { SkyMaterial } from "@babylonjs/materials/sky";
-import SceneComponent from "./SceneComponent";
-import { frameMaker } from "./frameMaker";
-import { defaultBuilding } from "./DefaultBuilding";
-import { initEnviromet,QuickTreeGenerator } from "./initEviroment";
-import { buildingRoom, buildGround } from "./buildingRoom";
-import { uploadBut,loopImg } from "./uploadButton";
-import {AvatarLoader} from "./Avatar"
-import {data} from "./data"
-
+  TransformNode,
+} from '@babylonjs/core';
+import { initEvent } from './initEvent';
+import { SkyMaterial } from '@babylonjs/materials/sky';
+import SceneComponent from './SceneComponent';
+import { frameMaker } from './frameMaker';
+import { defaultBuilding } from './DefaultBuilding';
+import { initEnviromet, QuickTreeGenerator } from './initEviroment';
+import { buildingRoom, buildGround } from './buildingRoom';
+import { uploadBut, loopImg } from './uploadButton';
+import { AvatarLoader } from './Avatar';
 
 // uses above component in same directory
 // import SceneComponent from 'babylonjs-hook'; // if you install 'babylonjs-hook' NPM.
-import "./App.css";
-const baseUrl = "https://raw.githubusercontent.com/bagheriarash/Files/main/";
+import './App.css';
+const baseUrl = 'https://raw.githubusercontent.com/bagheriarash/Files/main/';
 
 // let box;
 // let roomMerged;
@@ -29,12 +27,12 @@ const onSceneReady = (scene, data) => {
   const canvas = scene.getEngine().getRenderingCanvas();
   scene.canvasRef = canvas;
   window.sceneRef = scene;
-  console.log("data", data)
+  console.log('data', data);
 
   const camera = new ArcRotateCamera(
-    "camera1",
-    -Math.PI/2,
-    Math.PI/2,
+    'camera1',
+    -Math.PI / 2,
+    Math.PI / 2,
     5,
     new Vector3(0, 3, -10),
     scene
@@ -43,14 +41,14 @@ const onSceneReady = (scene, data) => {
   scene.activeCameras.push(camera);
   //scene.activeCameras.push(watcher);
   scene.activeCamera = camera;
-  console.log("camera", scene.activeCameras)
+  console.log('camera', scene.activeCameras);
   //camera.setTarget(currTar);
   // camera.minZ = 1000;
   // camera.maxZ = 1000.01;
   camera.lowerRadiusLimit = 2;
   camera.upperRadiusLimit = 10;
-	camera.lowerBetaLimit = 0.01;
-	camera.upperBetaLimit = (Math.PI / 2) * 0.9;
+  camera.lowerBetaLimit = 0.01;
+  camera.upperBetaLimit = (Math.PI / 2) * 0.9;
   camera.wheelDeltaPercentage = 0.01;
   camera.speed = 0.8;
   camera.checkCollisions = true;
@@ -72,18 +70,18 @@ const onSceneReady = (scene, data) => {
   camera.attachControl(canvas, true); // This attaches the camera to the canvas
   // scene.useRightHandedSystem = true
 
-  var parent = new TransformNode("parent");
-  parent.id = data.parent
-  parent.name = data.parent
+  var parent = new TransformNode('parent');
+  parent.id = data.parent;
+  parent.name = data.parent;
 
-  console.log("parent", parent);
+  console.log('parent', parent);
 
-  initEnviromet(scene, parent,data);
-  buildingRoom(scene, parent,data);
-  buildGround(scene,parent,data)
-  uploadBut(scene, parent,data);
-  AvatarLoader(scene,parent,data)
-  loopImg(scene,parent,data)
+  initEnviromet(scene, parent, data);
+  buildingRoom(scene, parent, data);
+  buildGround(scene, parent, data);
+  uploadBut(scene, parent, data);
+  AvatarLoader(scene, parent, data);
+  loopImg(scene, parent, data);
   //initEvent(scene, canvas, parent);
 };
 
@@ -99,13 +97,13 @@ const onRender = (scene) => {
   // }
 };
 
-export default () => (
+export default ({ data }) => (
   <div>
     <SceneComponent
       antialias
       onSceneReady={onSceneReady}
       onRender={onRender}
-      data = {data}
+      data={data}
       id="my-canvas"
     />
   </div>
