@@ -7,18 +7,25 @@ import {ERC721Burnable} from "@openzeppelin/contracts/token/ERC721/extensions/ER
 // import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 
+
 contract IFRAMESEA is ERC721, ERC721URIStorage {
+
+     uint256 public nextTokenId = 0;
+
 
       mapping(uint256 => uint256) public nftLikes;
       mapping(uint256 => string[]) public nftComments;
 
     constructor(address initialOwner)
         ERC721("iFrameSea", "IFS")
+        // Ownable(initialOwner)
     {}
 
-    function safeMint(address to, uint256 tokenId, string memory uri)
+    function safeMint(address to, string memory uri)
         public
     {
+        uint256 tokenId = nextTokenId; 
+         nextTokenId++;
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
     }
@@ -41,7 +48,7 @@ contract IFRAMESEA is ERC721, ERC721URIStorage {
         return super.supportsInterface(interfaceId);
     }
 
-      function likeNFT(uint256 _tokenId) public {
+    function likeNFT(uint256 _tokenId) public {
     nftLikes[_tokenId]++;
   }
   function getLikes(uint256 _tokenId) public view returns (uint256) {
