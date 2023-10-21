@@ -159,7 +159,7 @@ export const loopImg = async (scene, parent, data) => {
 
       innerFrame.material = innerFrameMat;
 
-      likeIconFunc(scene, addArt, data, width, height);
+      likeIconFunc(scene, addArt, data, width, height, i);
 
       // paintComponentArr.push(addArt, innerFrame, outerFrame);
       // console.log("paintComponentArr", paintComponentArr);
@@ -186,7 +186,7 @@ export const loopImg = async (scene, parent, data) => {
   }
 };
 
-let likeIconFunc = (scene, parent, data, width, height) => {
+let likeIconFunc = (scene, parent, data, width, height, tokenID) => {
   let fileRoute = "https://raw.githubusercontent.com/bagheriarash/Files/main/";
   let likeNum = new MeshBuilder.CreatePlane(
     "likeNum",
@@ -256,6 +256,7 @@ let likeIconFunc = (scene, parent, data, width, height) => {
   likeIcon.actionManager.registerAction(
     new ExecuteCodeAction(ActionManager.OnPickUpTrigger, function () {
       console.log("Like the Art");
+      //eventBus.emit("likeButton", tokenID);
     })
   );
 };
