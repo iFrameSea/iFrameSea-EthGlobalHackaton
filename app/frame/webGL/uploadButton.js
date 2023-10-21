@@ -5,6 +5,8 @@ import {
   StandardMaterial,
   Texture,
   Color3,
+  ActionManager,
+  ExecuteCodeAction,
 } from "@babylonjs/core";
 import "@babylonjs/gui";
 import { frameMaker } from "./frameMaker";
@@ -85,7 +87,9 @@ export const loopImg = async (scene, parent, data) => {
       console.log("pos", addArt.position);
       addArt.scaling.x = width;
       addArt.scaling.y = height;
-      addArt.checkCollisions = true;
+      addArt.isPickable = true;
+
+      //addArt.checkCollisions = true;
 
       let addArtMat = new StandardMaterial("paintMat", scene);
       addArtMat.diffuseTexture = new Texture(data.NFTs[i]);
@@ -155,6 +159,8 @@ export const loopImg = async (scene, parent, data) => {
 
       innerFrame.material = innerFrameMat;
 
+      likeIconFunc(scene, addArt, data, width, height);
+
       // paintComponentArr.push(addArt, innerFrame, outerFrame);
       // console.log("paintComponentArr", paintComponentArr);
       // let paintMerge = Mesh.MergeMeshes(
@@ -169,6 +175,87 @@ export const loopImg = async (scene, parent, data) => {
       //   paintComponentArr[i].dispose();
       // }
       // console.log("paint", paintMerge);
+
+      addArt.actionManager = new ActionManager(scene);
+      addArt.actionManager.registerAction(
+        new ExecuteCodeAction(ActionManager.OnPickUpTrigger, function () {
+          console.log("Click the Art");
+        })
+      );
     }
   }
+};
+
+let likeIconFunc = (scene, parent, data, width, height) => {
+  let fileRoute = "https://raw.githubusercontent.com/bagheriarash/Files/main/";
+  let likeNum = new MeshBuilder.CreatePlane(
+    "likeNum",
+    { width: 0.4, height: 0.4 },
+    scene
+  );
+
+  likeNum.parent = parent;
+  likeNum.position.x += width / 2 + 0.18;
+  likeNum.position.y += height / 2 - 0.2;
+  likeNum.position.z = -0.05;
+  console.log("likeBut");
+
+  let matnum = new StandardMaterial("oframe", scene);
+  matnum.diffuseColor = new Color3(1, 0, 0);
+  likeNum.material = matnum;
+
+  let likeNumText = GUI.AdvancedDynamicTexture.CreateForMesh(
+    likeNum,
+    1024,
+    1024
+  );
+  let rectLike = new GUI.Rectangle();
+  rectLike.adaptWidthToChildren = true;
+  rectLike.width = 0.3;
+  rectLike.height = 0.2;
+  rectLike.cornerRadius = 20;
+  rectLike.color = "black";
+  rectLike.thickness = 2;
+  rectLike.background = "black";
+  rectLike.alpha = 0.8;
+  // if (dataRow.like?.count > 0) {
+  //   rectLike.alpha = 0.8
+  // }
+  likeNumText.addControl(rectLike);
+
+  let textLike = new GUI.TextBlock();
+  // if (dataRow.like?.count > 0) {
+  //   textLike.text = `${dataRow.like.count}`
+  // }
+  textLike.color = "red";
+  textLike.width = 0.6;
+  textLike.fontSize = 170;
+  textLike.fontStyle = "bold";
+
+  rectLike.addControl(textLike);
+
+  var likeIcon = MeshBuilder.CreatePlane("LikeIcon", { size: 0.13 }, scene);
+  likeIcon.id = parent;
+
+  likeIcon.parent = parent;
+  likeIcon.position.x += width / 2 + 0.185;
+  likeIcon.position.y += height / 2 - 0.07;
+  likeIcon.position.z -= 0.06;
+
+  // likeIcon.iconType = "like";
+
+  likeIcon.isPickable = true;
+  let mat = new StandardMaterial("disc-mat", scene);
+  let tex = new Texture(fileRoute + "heartEmpty.png", scene);
+  mat.opacityTexture = tex;
+  mat.diffuseColor = new Color3(0, 0, 0);
+  mat.emissiveColor = new Color3(0, 0, 0);
+  likeIcon.material = mat;
+
+  likeIcon.actionManager = new ActionManager(scene);
+  likeIcon.actionManager.registerAction(
+    new ExecuteCodeAction(ActionManager.OnPickUpTrigger, function () {
+      console.log("Like the Art");
+    })
+  );
 };
