@@ -1,6 +1,4 @@
 'use client';
-import { sepolia } from 'wagmi/chains';
-
 import { WagmiConfig, createConfig, configureChains } from 'wagmi';
 
 import { publicProvider } from 'wagmi/providers/public';
@@ -10,7 +8,7 @@ import { InjectedConnector } from 'wagmi/connectors/injected';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 import WalletPopup from './WalletPopup';
-
+import { sepolia } from 'wagmi/chains';
 export const ganache = {
   id: 1337,
   name: 'Ganache',
@@ -30,19 +28,21 @@ export const ganache = {
   },
 };
 
+export const appChain = [sepolia];
+
 // Configure chains & providers with the Alchemy provider.
 // Two popular providers are Alchemy (alchemy.com) and Infura (infura.io)
-const { chains, publicClient } = configureChains([sepolia], [publicProvider()]);
+const { chains, publicClient } = configureChains(appChain, [publicProvider()]);
 
 // Set up wagmi config
 const config = createConfig({
   autoConnect: true,
   connectors: [
     new MetaMaskConnector({
-      chains: [sepolia],
+      chains: appChain,
     }),
     // new InjectedConnector({
-    //   chains: [sepolia],
+    //   chains: appChain,
     //   options: {
     //     name: 'Injected',
     //     shimDisconnect: true,
@@ -56,15 +56,15 @@ const config = createConfig({
       options: {
         projectId: '6ca8086a73c362ecf676554fee174e4f',
         metadata: {
-          name: 'ETHEREMPIRES',
-          description: 'ETHEREMPIRES',
-          url: 'https://etherempires.io',
-          icons: ['https://etherempires.io/favicon.ico'],
+          name: 'iFrameSea',
+          description: 'iFrameSea',
+          url: 'http://localhost:3000',
+          icons: ['http://localhost:3000/favicon.ico'],
         },
       },
     }),
     new CoinbaseWalletConnector({
-      chains: [sepolia],
+      chains: appChain,
       options: {
         appName: 'wagmi',
       },
