@@ -114,7 +114,7 @@ export default function FramePage() {
 
   return (
     <>
-      <InitCanvas key={data.NFTs.length} data={data} />
+      <InitCanvas key={data.NFTs?.length} data={data} />
       <div className="fixed left-4 bottom-4">
         <button className="btn" onClick={() => modal.current?.showModal()}>
           Mint NFT

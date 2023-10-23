@@ -11,6 +11,8 @@ import {
 import "@babylonjs/gui";
 import { frameMaker } from "./frameMaker";
 
+
+
 var _URL = window.URL || window.webkitURL;
 let img;
 
@@ -69,8 +71,8 @@ export const loopImg = async (scene, parent, data) => {
       });
       await result;
       console.log("dim", result.naturalWidth, result.naturalHeight);
-      let width = result.naturalWidth / 1000;
-      let height = result.naturalHeight / 1000;
+      let width = result.naturalWidth / 250;
+      let height = result.naturalHeight / 250;
       let addArt = MeshBuilder.CreatePlane(
         "1",
         { width: width, height: height },
@@ -159,7 +161,7 @@ export const loopImg = async (scene, parent, data) => {
 
       innerFrame.material = innerFrameMat;
 
-      likeIconFunc(scene, addArt, data, width, height, i);
+      likeIconFunc(scene, addArt, data, width, height);
 
       // paintComponentArr.push(addArt, innerFrame, outerFrame);
       // console.log("paintComponentArr", paintComponentArr);
@@ -186,7 +188,7 @@ export const loopImg = async (scene, parent, data) => {
   }
 };
 
-let likeIconFunc = (scene, parent, data, width, height, tokenID) => {
+let likeIconFunc = (scene, parent, data, width, height) => {
   let fileRoute = "https://raw.githubusercontent.com/bagheriarash/Files/main/";
   let likeNum = new MeshBuilder.CreatePlane(
     "likeNum",
@@ -256,7 +258,8 @@ let likeIconFunc = (scene, parent, data, width, height, tokenID) => {
   likeIcon.actionManager.registerAction(
     new ExecuteCodeAction(ActionManager.OnPickUpTrigger, function () {
       console.log("Like the Art");
-      //eventBus.emit("likeButton", tokenID);
+
+
     })
   );
 };
