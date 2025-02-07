@@ -6,7 +6,7 @@ import {
   BoundingInfo,
   ShadowGenerator,
   DirectionalLight,
-  normalizeToUnitCube,
+
   Mesh,
   MeshBuilder,
   getBoundingInfo,
@@ -14,7 +14,7 @@ import {
 import * as GUI from "@babylonjs/gui";
 
 var fileRoute = "https://raw.githubusercontent.com/bagheriarash/Files/main/";
-export const AvatarLoader = async (scene, parent, data) => {
+export const AvatarLoader = async (scene, parent,data) => {
   let readyPalyerAvatar;
   let animationAvatar;
 
@@ -119,7 +119,7 @@ export const AvatarLoader = async (scene, parent, data) => {
   // nameLable.isPickable = true;
 
   let nameText = GUI.AdvancedDynamicTexture.CreateForMesh(nameLable, 256, 256);
-  let textName = "Alex";
+  let textName = "arash";
 
   var nameLableBut = GUI.Button.CreateSimpleButton("Open_Btn", textName);
 
